@@ -1,0 +1,52 @@
+﻿@model Pinch.Models.Recipe
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Recipe Details</h2>
+
+@Html.HiddenFor(m => m.Id)
+
+<div class="jumbotron">
+    <div class="panel panel-success text-center">
+        <div class="panel-heading ">
+            <h1 class="panel-title">@Model.Name</h1>
+            <blockquote class="blockquote-reverse">
+                <p>@Model.Description</p>
+            </blockquote>
+        </div>
+        <div class="panel-body">
+            <h2>Recipe Ingredients are: </h2>
+            <ul class="list-group">
+                @if(Model.RecipeIngredients.Count != 0)
+                {
+                    foreach (var Ingredient in Model.RecipeIngredients)
+                     {
+                        <li class="list-group-item">
+                            @Ingredient.Measurement
+                            @Ingredient.UnitOfMeasurement of 
+                            @Ingredient.Ingredient.Name
+                        </li>
+                     }
+                }
+            </ul>
+        </div>
+        <div class="panel-footer">
+            <h2>Instructions to cook are: </h2>
+            <ul class="list-group">
+                @if(Model.Instructions.Count != 0)
+                {
+                    foreach (var Instruction in Model.Instructions.OrderBy(i => i.SequenceOrder))
+                     {
+                        <li class="list-group-item text-left">
+                            @Instruction.SequenceOrder .
+                            @Instruction.Name
+                        </li>
+                     }
+                }
+            </ul>
+        </div>
+    </div>
+</div>
+
+

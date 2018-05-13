@@ -1,0 +1,81 @@
+﻿@using Newtonsoft.Json
+@model Pinch.Models.Recipe
+
+@{
+    ViewBag.Title = "EditRecipeIngredient";
+}
+
+<div class="form-group">
+    <div class="panel panel-primary">
+        <div class="panel-heading">Recipe Ingredients</div>
+        <div class="panel-body" id="recipe-ingredients"></div>
+        <div class="panel-footer">
+            <div class="row">
+                <div class="col-sm-4">
+                    <input id="ingredient-measurement" class="form-control" type="text" placeholder="Enter Ingredient measurement..." />
+                </div>
+                <div class="col-sm-4">
+                    <input id="ingredient-measurement-unit" class="form-control" type="text" placeholder="Enter Ingredient measurement unit..." />
+                </div>
+                <div class="col-sm-4">
+                    <input id="ingredient-name" class="form-control" type="text" placeholder="Enter Ingredient name..." />
+                </div>
+            </div>
+            <div style="padding-top: 20px" class="row">
+                <div class="col-sm-12 text-center">
+                        <button id="add-ingredient" class="btn btn-success">Add Ingredients</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section scripts{
+    <script>
+
+        var recipeIngredients = '@Html.Raw(JsonConvert.SerializeObject(Model.RecipeIngredients
+                      .Select(ri => new { Id = ri.Id,
+                          RecipeId = ri.RecipeId,
+                          Measurement = ri.Measurement,
+                          UnitOfMeasurement = ri.UnitOfMeasurement,
+                          IngredientName = ri.Ingredient.Name })
+                      .ToArray()))';
+        var ul = $("<ul class=\"list-group\">");
+
+        $.each(JSON.parse(recipeIngredients), function (i, recipeIngredient) {
+            ul.append("<li class=\"list-group-item\">" + recipeIngredient.Measurement + " " + recipeIngredient.UnitOfMeasurement + " " + recipeIngredient.IngredientName + "</li>");
+        });
+
+        $("#recipe-ingredients").append(ul);
+
+        $("#add-ingredient").click(function() {
+
+            $.ajax({
+                method: 'post',
+                url: '@Url.RouteUrl("EditRecipeIngredientAjax", new { recipeId = Model.Id })',
+                data: {
+                    RecipeId: @Model.Id,
+                    Measurement: $('#ingredient-measurement').val(),
+                    UnitOfMeasurement: $('#ingredient-measurement-unit').val(),
+                    IngredientName: $('#ingredient-name').val()
+                },
+                success: function (data) {
+                    toastr.success("Thanks for adding ingredient");
+                    console.log(data);
+                    $("#recipe-ingredients ul").append("<li class=\"list-group-item\">" + data.Measurement + "  " + data.UnitOfMeasurement + "  " + data.IngredientName + "</li>");
+                    $('#ingredient-name').val('');
+                    $('#ingredient-measurement').val('');
+                    $('#ingredient-measurement-unit').val('');
+                },
+                error: function() {
+                    console.warn('Unable to add ingredient');
+                }
+            });
+        });
+
+    </script>
+}
+
+
+
