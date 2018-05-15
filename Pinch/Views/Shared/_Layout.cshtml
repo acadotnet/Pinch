@@ -20,10 +20,9 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
                     <li>@Html.ActionLink("Recipes", "Index", "Recipes")</li>
+                    <li>@Html.ActionLink("Gallery", "Gallery", "Home")</li>
+                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
                 </ul>
             </div>
         </div>
@@ -31,8 +30,9 @@
     <div class="container body-content">
         @RenderBody()
         <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+        <footer class="row text-center">
+            <a href="#" title="Follow on FaceBook"><img class="iconimg" src="https://sp.yimg.com/ib/th?id=OIP.owmnHGEOH0VPhF7J6rTq8gHaFm&pid=15.1&rs=1&c=1&qlt=95&w=123&h=93" /></a>
+            <a href="#" title="Follow on Twitter"><img class="iconimg" src="http://www.aamu.edu/Admissions/UndergraduateAdmissions/PublishingImages/twitter-logo.jpg" /></a>
         </footer>
     </div>
 

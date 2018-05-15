@@ -17,6 +17,8 @@ namespace Pinch.Models
 
         public bool IsFavorite { get; set; }
 
+        public string ImageLink { get; set; }
+
         public ICollection<RecipeIngredient> RecipeIngredients { get; set; }
 
         public ICollection<Instruction> Instructions { get; set; }

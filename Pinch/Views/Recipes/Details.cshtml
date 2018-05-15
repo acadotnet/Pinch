@@ -3,49 +3,59 @@
     ViewBag.Title = "Details";
 }
 
-<h2>Recipe Details</h2>
-
 @Html.HiddenFor(m => m.Id)
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="@Url.RouteUrl("AllRecipes")">Home</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">Details</li>
+    </ol>
+</nav>
 
 <div class="jumbotron">
     <div class="panel panel-success text-center">
         <div class="panel-heading ">
-            <h1 class="panel-title">@Model.Name</h1>
-            <blockquote class="blockquote-reverse">
-                <p>@Model.Description</p>
-            </blockquote>
+            <h3 class="panel-title">@Model.Description @Model.Name</h3>
+            <img src="@Model.ImageLink" class="img-responsive" title="@Model.Name" />
         </div>
         <div class="panel-body">
-            <h2>Recipe Ingredients are: </h2>
+            <h2>Ingredients </h2>
             <ul class="list-group">
-                @if(Model.RecipeIngredients.Count != 0)
+                @if (Model.RecipeIngredients.Count != 0)
+            {
+                foreach (var Ingredient in Model.RecipeIngredients)
                 {
-                    foreach (var Ingredient in Model.RecipeIngredients)
-                     {
-                        <li class="list-group-item">
-                            @Ingredient.Measurement
-                            @Ingredient.UnitOfMeasurement of 
-                            @Ingredient.Ingredient.Name
-                        </li>
-                     }
-                }
+                    <li class="list-group-item">
+                        @Ingredient.Measurement
+                        @Ingredient.UnitOfMeasurement of
+                        @Ingredient.Ingredient.Name
+                    </li>
+            }
+        }
             </ul>
         </div>
         <div class="panel-footer">
-            <h2>Instructions to cook are: </h2>
+            <h2>Cooking Instructions </h2>
             <ul class="list-group">
-                @if(Model.Instructions.Count != 0)
+                @if (Model.Instructions.Count != 0)
+            {
+                foreach (var Instruction in Model.Instructions.OrderBy(i => i.SequenceOrder))
                 {
-                    foreach (var Instruction in Model.Instructions.OrderBy(i => i.SequenceOrder))
-                     {
-                        <li class="list-group-item text-left">
-                            @Instruction.SequenceOrder .
-                            @Instruction.Name
-                        </li>
-                     }
-                }
+                    <li class="list-group-item text-left">
+                        @Instruction.SequenceOrder .
+                        @Instruction.Name
+                    </li>
+            }
+        }
             </ul>
         </div>
+
+        <a href="@Url.RouteUrl("RecipeEdit", new { id = Model.Id })" class="btn btn-success">Edit Recipe Details</a>
+        <a href="@Url.RouteUrl("EditRecipeIngredient", new { recipeId = Model.Id })" class="btn btn-success">Add Ingredients</a>
+        <a href="@Url.RouteUrl("Editinstructions", new { recipeId = Model.Id })" class="btn btn-success">Add Instructions</a>
+
     </div>
 </div>
 

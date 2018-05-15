@@ -2,20 +2,25 @@
 @{
     ViewBag.Title = "Index";
 }
-
-<h2>Index</h2>
-
-<div class="row">
-    <div class="col-sm-12 text-right"><a href="@Url.RouteUrl("RecipeCreate")" class="btn btn-success">Add a Recipe</a></div>
+<br />
+<div class="row text-right">
+    @using (Html.BeginForm("Index", "Recipes", FormMethod.Get))
+    {
+        <b>Search by:</b>@Html.RadioButton("searchBy", "RecipeName")<text> Recipe Name</text>
+        @Html.RadioButton("searchBy", "Ingredient")<text>Ingredient Name</text><br />
+        @Html.TextBox("Search");<input type="submit" class="btn btn-success" value="Search" />
+    }
+    <div class="col-sm-6 text-left"><a href="@Url.RouteUrl("RecipeCreate")" class="btn btn-success">Add your Creation</a></div>
 </div>
 
 <br />
 
-<table class="table table-bordered">
+<table class="table table-bordered table-hover StandardTable">
     <thead>
         <tr>
             <th>Name</th>
             <th>Description</th>
+            <th>Picture</th>
             <th>Actions</th>
         </tr>
     </thead>
@@ -23,10 +28,12 @@
         @foreach (var Recipe in Model)
         {
             <tr>
-                <td>@Recipe.Name</td>
+                <td><a href="@Url.RouteUrl("RecipeDetails", new { id = Recipe.Id })">@Recipe.Name</a></td>
                 <td>@Recipe.Description</td>
+                <td><img src="@Recipe.ImageLink" class="img-responsive" height="100px" width="100px"/></td>
+
                 <td>
-                    <a href="@Url.RouteUrl("RecipeDetails", new { id = Recipe.Id })" class="btn btn-success">Details</a>
+                    <a href="@Url.RouteUrl("RecipeEdit", new { id = Recipe.Id })" class="btn btn-success">Edit</a>
                     <a href="@Url.RouteUrl("EditRecipeIngredient", new { recipeId = Recipe.Id })" class="btn btn-success">Add Ingredients</a>
                     <a href="@Url.RouteUrl("Editinstructions", new { recipeId = Recipe.Id })" class="btn btn-success">Add Instructions</a>
                     <a href="@Url.RouteUrl("RecipeDelete", new { id = Recipe.Id })" class="btn btn-success">Delete</a>
@@ -35,4 +42,3 @@
         }
     </tbody>
 </table>
-

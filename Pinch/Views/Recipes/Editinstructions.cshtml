@@ -1,12 +1,19 @@
-﻿@model Pinch.Models.Recipe
+﻿@using Newtonsoft.Json
+@model Pinch.Models.Recipe
 @{
     ViewBag.Title = "Editinstructions";
 }
-<h2></h2>
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="@Url.RouteUrl("AllRecipes")">Home</a></li>
+        <li class="breadcrumb-item"><a href="@Url.RouteUrl("RecipeDetails", new { id = Model.Id })">Details</a></li>
+        <li class="breadcrumb-item active" aria-current="page">CookingInstructions</li>
+    </ol>
+</nav>
 <div class="form-group">
     <div class="panel panel-primary">
         <div class="panel-heading">Recipe Instructions</div>
-        <div class="panel-body" id="recipe-Instructions"></div>
+        <div class="panel-body" id="recipe-instructions"></div>
         <div class="panel-footer">
             <div class="row">
                 <div class="col-sm-2">
@@ -18,17 +25,63 @@
             </div>
             <div class="row">
                 <div class="col-sm-2">
-                    <input id="Instructions-sequence" class="form-control" type="text" placeholder="Sequence order..." />
+                    <input id="instructions-sequence" class="form-control" type="text" placeholder="Sequence order..." />
                 </div>
                 <div class="col-sm-10">
-                    <input id="Instructions-Name" class="form-control" type="text" placeholder="Enter Instructions ..." />
+                    <input id="instructions-name" class="form-control" type="text" placeholder="Enter Instructions ..." />
                 </div>
             </div>
             <div style="padding-top: 20px" class="row">
                 <div class="col-sm-12 text-center">
-                    <button id="add-Instructions" class="btn btn-success">Add Instructions</button>
+                    <button id="add-instructions" class="btn btn-success">Add Instructions</button>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+
+@section scripts{
+    <script>
+
+        var recipeInstructions = '@Html.Raw(JsonConvert.SerializeObject(Model.Instructions
+                      .Select(ri => new { Id = ri.Id,
+                          RecipeId = ri.RecipeId,
+                          SequenceOrder = ri.SequenceOrder,
+                          Name = ri.Name })
+                      .ToArray()))';
+        var ul = $("<ul class=\"list-group\">");
+
+        $.each(JSON.parse(recipeInstructions), function (i, ri) {
+            ul.append("<li class=\"list-group-item\">" + ri.SequenceOrder + ". " + ri.Name + "</li>");
+            console.log(ri.SequenceOrder + ri.Name);
+        });
+
+        $("#recipe-instructions").append(ul);
+
+        $("#add-instructions").click(function() {
+
+            $.ajax({
+                method: 'post',
+                url: '@Url.RouteUrl("EditinstructionsAjax", new { recipeId = Model.Id })',
+                data: {
+                    RecipeId: @Model.Id,
+                    SequenceOrder: $('#instructions-sequence').val(),
+                    Name: $('#instructions-name').val()
+                },
+                success: function (data) {
+                    toastr.success("Thanks for adding instructions");
+                    $("#recipe-instructions ul").append("<li class=\"list-group-item\">" + data.SequenceOrder + ".  " + data.Name + "</li>");
+                    $('#instructions-sequence').val('');
+                    $('#instructions-name').val('');
+                },
+                error: function() {
+                    console.warn('Unable to add instructions');
+                }
+            });
+        });
+
+    </script>
+}
+
+

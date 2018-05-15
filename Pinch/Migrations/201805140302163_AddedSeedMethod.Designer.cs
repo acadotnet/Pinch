@@ -7,13 +7,13 @@ namespace Pinch.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.2.0-61023")]
-    public sealed partial class InitialSetUp : IMigrationMetadata
+    public sealed partial class AddedSeedMethod : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(InitialSetUp));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(AddedSeedMethod));
         
         string IMigrationMetadata.Id
         {
-            get { return "201805090327559_InitialSetUp"; }
+            get { return "201805140302163_AddedSeedMethod"; }
         }
         
         string IMigrationMetadata.Source

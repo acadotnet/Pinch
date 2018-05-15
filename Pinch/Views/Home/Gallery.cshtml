@@ -1,0 +1,15 @@
+﻿@model List<Pinch.Models.Recipe>
+@{
+    ViewBag.Title = "Gallery";
+}
+<h2>PinchOfTaste's @ViewBag.Title.</h2>
+
+@foreach (var recipe in Model)
+{
+        <div class="gallery">
+            <a target="_blank" href="@Url.RouteUrl("RecipeDetails", new { id = recipe.Id })">
+                <img src="@recipe.ImageLink" alt="@recipe.Name" width="300" height="200">
+            </a>
+            <div class="desc">@recipe.Description</div>
+        </div>
+}

@@ -1,9 +1,17 @@
 ﻿@using Newtonsoft.Json
-@model Pinch.Models.Recipe
+@*@model Pinch.Models.Recipe*@
+@model Pinch.ViewModels.Recipes.EditRecipeIngredientViewModel
 
 @{
     ViewBag.Title = "EditRecipeIngredient";
 }
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="@Url.RouteUrl("AllRecipes")">Home</a></li>
+        <li class="breadcrumb-item"><a href="@Url.RouteUrl("RecipeDetails", new { id = Model.Recipe.Id })">Details</a></li>
+        <li class="breadcrumb-item active" aria-current="page">RecipeIngredient</li>
+    </ol>
+</nav>
 
 <div class="form-group">
     <div class="panel panel-primary">
@@ -18,8 +26,11 @@
                     <input id="ingredient-measurement-unit" class="form-control" type="text" placeholder="Enter Ingredient measurement unit..." />
                 </div>
                 <div class="col-sm-4">
-                    <input id="ingredient-name" class="form-control" type="text" placeholder="Enter Ingredient name..." />
+                    @*          <input id="ingredient-name" class="form-control" type="text" placeholder="Enter Ingredient name..." />*@
+                    @Html.DropDownListFor(m => m.SelectedIngredientName, new SelectList(Model.Ingredients, "Name", "Name"), "Choose a Ingredient", new { @class = "form-control ingredient-name" })
                 </div>
+
+            </div>
             </div>
             <div style="padding-top: 20px" class="row">
                 <div class="col-sm-12 text-center">
@@ -34,7 +45,7 @@
 @section scripts{
     <script>
 
-        var recipeIngredients = '@Html.Raw(JsonConvert.SerializeObject(Model.RecipeIngredients
+        var recipeIngredients = '@Html.Raw(JsonConvert.SerializeObject(Model.Recipe.RecipeIngredients
                       .Select(ri => new { Id = ri.Id,
                           RecipeId = ri.RecipeId,
                           Measurement = ri.Measurement,
@@ -53,18 +64,18 @@
 
             $.ajax({
                 method: 'post',
-                url: '@Url.RouteUrl("EditRecipeIngredientAjax", new { recipeId = Model.Id })',
+                url: '@Url.RouteUrl("EditRecipeIngredientAjax", new { recipeId = Model.Recipe.Id })',
                 data: {
-                    RecipeId: @Model.Id,
+                    RecipeId: @Model.Recipe.Id,
                     Measurement: $('#ingredient-measurement').val(),
                     UnitOfMeasurement: $('#ingredient-measurement-unit').val(),
-                    IngredientName: $('#ingredient-name').val()
+                    IngredientName: $('.ingredient-name').val()
                 },
                 success: function (data) {
                     toastr.success("Thanks for adding ingredient");
                     console.log(data);
                     $("#recipe-ingredients ul").append("<li class=\"list-group-item\">" + data.Measurement + "  " + data.UnitOfMeasurement + "  " + data.IngredientName + "</li>");
-                    $('#ingredient-name').val('');
+                    $('.ingredient-name').val('');
                     $('#ingredient-measurement').val('');
                     $('#ingredient-measurement-unit').val('');
                 },

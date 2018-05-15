@@ -3,7 +3,7 @@ namespace Pinch.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class InitialSetUp : DbMigration
+    public partial class intialSetUp : DbMigration
     {
         public override void Up()
         {
@@ -40,6 +40,7 @@ namespace Pinch.Migrations
                         Name = c.String(nullable: false),
                         Description = c.String(),
                         IsFavorite = c.Boolean(nullable: false),
+                        ImageLink = c.String(),
                     })
                 .PrimaryKey(t => t.Id);
             
