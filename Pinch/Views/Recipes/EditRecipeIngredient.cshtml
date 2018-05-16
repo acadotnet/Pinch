@@ -70,7 +70,20 @@
             //delete ingredient from controller (server)
             //remove the element from HTML Markup
             //toastr a success or error message (e.g. Hobby was deleted)
-            console.log(ingredientId);
+            $.ajax({
+                method: 'post',
+                url: '@Url.RouteUrl("DeleteRecipeIngredient")',
+                data: {
+                    ingredientId: ingredientId
+                    },
+                success: function (data) {
+                    toastr.success("Thanks for deleting ingredient. Refresh page to show changes on the page.");
+                    console.log(data);
+                },
+                error: function () {
+                    console.warn('Unable to delete ingredient');
+                }
+            });
         });
 
         $("#add-ingredient").click(function() {

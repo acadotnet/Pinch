@@ -247,6 +247,20 @@ namespace Pinch.Controllers
             return RedirectToRoute("AllRecipes");
         }
 
+        [Route("DeleteIngredient", Name = "DeleteRecipeIngredient")]
+        public ActionResult DeleteIngredient(int ingredientId)
+        {
+            var ingredientToDelete = _context.RecipeIngredients.FirstOrDefault(ri => ri.Id == ingredientId);
+            if (ingredientToDelete == null)
+            {
+                return new HttpStatusCodeResult(404, "Ingredient not found");
+            }
+
+            _context.RecipeIngredients.Remove(ingredientToDelete);
+            _context.SaveChanges();
+
+            return new HttpStatusCodeResult(202, "Success");
+        }
 
     }
 }
