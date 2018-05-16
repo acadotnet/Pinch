@@ -28,7 +28,7 @@ namespace Pinch.Controllers
 
             if (searchBy == "RecipeName")
             {
-                var recipesNameSearch = _context.Recipes.Where(r => r.Name == Search).ToList();
+                var recipesNameSearch = _context.Recipes.Where(r => r.Name.Contains(Search)).ToList();
                 return View(recipesNameSearch);
             }
             else if (searchBy == "Ingredient")
@@ -36,7 +36,7 @@ namespace Pinch.Controllers
                 var recipeByIngredientSearch = new List<Recipe>();
 
                 var IngredientSearch = _context.Ingredients.Include(i => i.RecipeIngredients.Select(ri => ri.Recipe))
-                                                           .Where(i => i.Name == Search).ToList();
+                                                           .Where(i => i.Name.Contains(Search)).ToList();
                 foreach (var ingredient in IngredientSearch)
                 {
                     foreach(var recipeIngredient in ingredient.RecipeIngredients)
@@ -44,7 +44,8 @@ namespace Pinch.Controllers
                         recipeByIngredientSearch.Add(recipeIngredient.Recipe);
                     }
                 }
-                return View(recipeByIngredientSearch);
+
+                 return View(recipeByIngredientSearch.Distinct().ToList());
             }
             else
             {
