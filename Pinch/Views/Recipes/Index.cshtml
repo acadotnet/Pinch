@@ -21,7 +21,7 @@
             <th>Name</th>
             <th>Description</th>
             <th>Picture</th>
-            <th>Actions</th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -33,10 +33,18 @@
                 <td><img src="@Recipe.ImageLink" class="img-responsive" height="100px" width="100px"/></td>
 
                 <td>
-                    <a href="@Url.RouteUrl("RecipeEdit", new { id = Recipe.Id })" class="btn btn-success">Edit</a>
-                    <a href="@Url.RouteUrl("EditRecipeIngredient", new { recipeId = Recipe.Id })" class="btn btn-success">Add Ingredients</a>
-                    <a href="@Url.RouteUrl("Editinstructions", new { recipeId = Recipe.Id })" class="btn btn-success">Add Instructions</a>
-                    <a href="@Url.RouteUrl("RecipeDelete", new { id = Recipe.Id })" class="btn btn-success">Delete</a>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" >
+                            Action <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a href="@Url.RouteUrl("RecipeEdit", new { id = Recipe.Id })">Edit</a></li>
+                            <li><a href="@Url.RouteUrl("EditRecipeIngredient", new { recipeId = Recipe.Id })">Add Ingredients</a></li>
+                            <li><a href="@Url.RouteUrl("Editinstructions", new { recipeId = Recipe.Id })">Add Instructions</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="@Url.RouteUrl("RecipeDelete", new { id = Recipe.Id })">Delete</a></li>
+                        </ul>
+                    </div>
                 </td>
             </tr>
         }
