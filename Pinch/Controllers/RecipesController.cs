@@ -8,6 +8,7 @@ using Pinch.Data;
 using Pinch.Models;
 using Pinch.ViewModels;
 using Pinch.ViewModels.Recipes;
+using System.Net;
 
 namespace Pinch.Controllers
 {
@@ -247,19 +248,20 @@ namespace Pinch.Controllers
             return RedirectToRoute("AllRecipes");
         }
 
+        [HttpPost]
         [Route("DeleteIngredient", Name = "DeleteRecipeIngredient")]
         public ActionResult DeleteIngredient(int ingredientId)
         {
             var ingredientToDelete = _context.RecipeIngredients.FirstOrDefault(ri => ri.Id == ingredientId);
             if (ingredientToDelete == null)
             {
-                return new HttpStatusCodeResult(404, "Ingredient not found");
+                return new HttpStatusCodeResult(HttpStatusCode.OK);
             }
 
             _context.RecipeIngredients.Remove(ingredientToDelete);
             _context.SaveChanges();
 
-            return new HttpStatusCodeResult(202, "Success");
+            return new HttpStatusCodeResult(HttpStatusCode.NotFound);
         }
 
     }
