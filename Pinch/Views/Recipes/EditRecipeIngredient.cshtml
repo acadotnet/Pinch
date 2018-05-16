@@ -43,7 +43,7 @@
 
 
 @section scripts{
-    <script>
+<script>
 
         var recipeIngredients = '@Html.Raw(JsonConvert.SerializeObject(Model.RecipeIngredients
                       .Select(ri => new { Id = ri.Id,
@@ -57,7 +57,7 @@
         $.each(JSON.parse(recipeIngredients), function (i, recipeIngredient) {
             ul.append("<li class=\"list-group-item\">" + recipeIngredient.Measurement + " " +
                 recipeIngredient.UnitOfMeasurement + " " +
-                recipeIngredient.IngredientName +
+                recipeIngredient.IngredientName + 
                 "<a class = \"btn btn-sm pull-right delete-ingredient\" data-ingredient-id=\"" + recipeIngredient.Id + "\">Delete</a>" + "</li>");
         });
 
@@ -98,7 +98,7 @@
             });
         });
 
-    </script>
+</script>
 }
 
 

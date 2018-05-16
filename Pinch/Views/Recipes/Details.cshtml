@@ -24,31 +24,31 @@
             <h2>Ingredients </h2>
             <ul class="list-group">
                 @if (Model.RecipeIngredients.Count != 0)
-            {
-                foreach (var Ingredient in Model.RecipeIngredients)
                 {
-                    <li class="list-group-item">
-                        @Ingredient.Measurement
-                        @Ingredient.UnitOfMeasurement of
-                        @Ingredient.Ingredient.Name
-                    </li>
-            }
-        }
+                    foreach (var Ingredient in Model.RecipeIngredients)
+                    {
+                        <li class="list-group-item">
+                            @Ingredient.Measurement
+                            @Ingredient.UnitOfMeasurement of
+                            <a href="@Url.RouteUrl("AllRecipes", new { @searchBy = "Ingredient", @Search=@Ingredient.Ingredient.Name})">@Ingredient.Ingredient.Name</a>
+                        </li>
+                    }
+                }
             </ul>
         </div>
         <div class="panel-footer">
             <h2>Cooking Instructions </h2>
             <ul class="list-group">
                 @if (Model.Instructions.Count != 0)
-            {
-                foreach (var Instruction in Model.Instructions.OrderBy(i => i.SequenceOrder))
                 {
-                    <li class="list-group-item text-left">
-                        @Instruction.SequenceOrder .
-                        @Instruction.Name
-                    </li>
-            }
-        }
+                    foreach (var Instruction in Model.Instructions.OrderBy(i => i.SequenceOrder))
+                    {
+                        <li class="list-group-item text-left">
+                            @Instruction.SequenceOrder .
+                            @Instruction.Name
+                        </li>
+                    }
+                }
             </ul>
         </div>
 
@@ -58,5 +58,3 @@
 
     </div>
 </div>
-
-
