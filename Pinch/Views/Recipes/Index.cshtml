@@ -28,7 +28,13 @@
         @foreach (var Recipe in Model)
         {
             <tr>
-                <td><a href="@Url.RouteUrl("RecipeDetails", new { id = Recipe.Id })">@Recipe.Name</a></td>
+                <td>
+                    @if (Recipe.IsFavorite == true)
+                    {
+                        <span class="glyphicon glyphicon-heart text-danger" aria-hidden="true"></span>
+                    }
+                    <a href="@Url.RouteUrl("RecipeDetails", new { id = Recipe.Id })">@Recipe.Name</a>
+                </td>
                 <td>@Recipe.Description</td>
                 <td><img src="@Recipe.ImageLink" class="img-responsive" height="100px" width="100px"/></td>
 
