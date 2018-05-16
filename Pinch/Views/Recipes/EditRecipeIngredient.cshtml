@@ -1,6 +1,6 @@
 ﻿@using Newtonsoft.Json
-@*@model Pinch.Models.Recipe*@
-@model Pinch.ViewModels.Recipes.EditRecipeIngredientViewModel
+@model Pinch.Models.Recipe
+@*@model Pinch.ViewModels.Recipes.EditRecipeIngredientViewModel*@
 
 @{
     ViewBag.Title = "EditRecipeIngredient";
@@ -8,7 +8,7 @@
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="@Url.RouteUrl("AllRecipes")">Home</a></li>
-        <li class="breadcrumb-item"><a href="@Url.RouteUrl("RecipeDetails", new { id = Model.Recipe.Id })">@Model.Recipe.Name</a></li>
+        <li class="breadcrumb-item"><a href="@Url.RouteUrl("RecipeDetails", new { id = Model.Id })">@Model.Name</a></li>
         <li class="breadcrumb-item active" aria-current="page">Ingredients</li>
     </ol>
 </nav>
@@ -26,8 +26,8 @@
                     <input id="ingredient-measurement-unit" class="form-control" type="text" placeholder="Enter Ingredient measurement unit..." />
                 </div>
                 <div class="col-sm-4">
-                    @*          <input id="ingredient-name" class="form-control" type="text" placeholder="Enter Ingredient name..." />*@
-                    @Html.DropDownListFor(m => m.SelectedIngredientName, new SelectList(Model.Ingredients, "Name", "Name"), "Choose a Ingredient", new { @class = "form-control ingredient-name" })
+                    <input id="ingredient-name" class="form-control" type="text" placeholder="Enter Ingredient name..." />
+                    @*@Html.DropDownListFor(m => m.SelectedIngredientName, new SelectList(Model.Ingredients, "Name", "Name"), "Choose a Ingredient", new { @class = "form-control ingredient-name" })*@
                 </div>
 
             </div>
@@ -45,7 +45,7 @@
 @section scripts{
     <script>
 
-        var recipeIngredients = '@Html.Raw(JsonConvert.SerializeObject(Model.Recipe.RecipeIngredients
+        var recipeIngredients = '@Html.Raw(JsonConvert.SerializeObject(Model.RecipeIngredients
                       .Select(ri => new { Id = ri.Id,
                           RecipeId = ri.RecipeId,
                           Measurement = ri.Measurement,
@@ -55,27 +55,40 @@
         var ul = $("<ul class=\"list-group\">");
 
         $.each(JSON.parse(recipeIngredients), function (i, recipeIngredient) {
-            ul.append("<li class=\"list-group-item\">" + recipeIngredient.Measurement + " " + recipeIngredient.UnitOfMeasurement + " " + recipeIngredient.IngredientName + "</li>");
+            ul.append("<li class=\"list-group-item\">" + recipeIngredient.Measurement + " " +
+                recipeIngredient.UnitOfMeasurement + " " +
+                recipeIngredient.IngredientName +
+                "<a class = \"btn btn-sm pull-right delete-ingredient\" data-ingredient-id=\"" + recipeIngredient.Id + "\">Delete</a>" + "</li>");
         });
 
         $("#recipe-ingredients").append(ul);
+
+        $(".delete-ingredient").click(function () {
+            var ingredientId = $(this).data("ingredient-id");
+
+            //call ajax method with ingredient id
+            //delete ingredient from controller (server)
+            //remove the element from HTML Markup
+            //toastr a success or error message (e.g. Hobby was deleted)
+            console.log(ingredientId);
+        });
 
         $("#add-ingredient").click(function() {
 
             $.ajax({
                 method: 'post',
-                url: '@Url.RouteUrl("EditRecipeIngredientAjax", new { recipeId = Model.Recipe.Id })',
+                url: '@Url.RouteUrl("EditRecipeIngredientAjax", new { recipeId = Model.Id })',
                 data: {
-                    RecipeId: @Model.Recipe.Id,
+                    RecipeId: @Model.Id,
                     Measurement: $('#ingredient-measurement').val(),
                     UnitOfMeasurement: $('#ingredient-measurement-unit').val(),
-                    IngredientName: $('.ingredient-name').val()
+                    IngredientName: $('#ingredient-name').val()
                 },
                 success: function (data) {
                     toastr.success("Thanks for adding ingredient");
                     console.log(data);
                     $("#recipe-ingredients ul").append("<li class=\"list-group-item\">" + data.Measurement + "  " + data.UnitOfMeasurement + "  " + data.IngredientName + "</li>");
-                    $('.ingredient-name').val('');
+                    $('#ingredient-name').val('');
                     $('#ingredient-measurement').val('');
                     $('#ingredient-measurement-unit').val('');
                 },

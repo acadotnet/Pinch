@@ -151,22 +151,22 @@ namespace Pinch.Controllers
                 return HttpNotFound();
             }
 
-            //return View(recipe);
-            var editRecipeViewModel = new EditRecipeIngredientViewModel
-            {
-                Recipe = recipe,
-                SelectedIngredientName = "",
-                Ingredients = _context.Ingredients.ToList()
-            };
+            return View(recipe);
+            //var editRecipeViewModel = new EditRecipeIngredientViewModel
+            //{
+            //    Recipe = recipe,
+            //    SelectedIngredientName = "",
+            //    Ingredients = _context.Ingredients.ToList()
+            ////};
 
-            return View(editRecipeViewModel);
+            //return View(editRecipeViewModel);
         }
 
         [HttpPost]
         [Route("EditRecipeIngredient/{recipeId}", Name = "EditRecipeIngredientAjax")]
         public JsonResult EditRecipeIngredient(EditIngredientViewModel model)
         {
-            var existingIngredient = _context.Ingredients.Where(i => i.Name == model.IngredientName).FirstOrDefault();
+            var existingIngredient = _context.Ingredients.FirstOrDefault(i => i.Name == model.IngredientName);
 
             if(existingIngredient == null)
             {
