@@ -10,14 +10,14 @@
         <li class="breadcrumb-item">
             <a href="@Url.RouteUrl("AllRecipes")">Home</a>
         </li>
-        <li class="breadcrumb-item active" aria-current="page">Details</li>
+        <li class="breadcrumb-item active" aria-current="page">@Model.Name</li>
     </ol>
 </nav>
 
 <div class="jumbotron">
     <div class="panel panel-success text-center">
         <div class="panel-heading ">
-            <h3 class="panel-title">@Model.Description @Model.Name</h3>
+            <h3 class="panel-title">@Model.Description <br /> @Model.Name</h3>
             <img src="@Model.ImageLink" class="img-responsive" title="@Model.Name" />
         </div>
         <div class="panel-body">
@@ -30,7 +30,7 @@
                         <li class="list-group-item">
                             @Ingredient.Measurement
                             @Ingredient.UnitOfMeasurement of
-                            <a href="@Url.RouteUrl("AllRecipes", new { @searchBy = "Ingredient", @Search=@Ingredient.Ingredient.Name})">@Ingredient.Ingredient.Name</a>
+                            <a href="@Url.RouteUrl("IngredientDetails", new { @ingredientId = @Ingredient.Ingredient.Id})">@Ingredient.Ingredient.Name</a>
                         </li>
                     }
                 }

@@ -149,6 +149,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\IngredientsController.cs" />
     <Compile Include="Controllers\RecipesController.cs" />
     <Compile Include="Data\PinchContext.cs" />
     <Compile Include="Global.asax.cs">
@@ -172,6 +173,7 @@
     <Compile Include="Models\Recipe.cs" />
     <Compile Include="Models\RecipeIngredient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModels\Ingredients\DetailsViewModel.cs" />
     <Compile Include="ViewModels\Recipes\EditIngredientViewModel.cs" />
     <Compile Include="ViewModels\Recipes\EditRecipeIngredientViewModel.cs" />
   </ItemGroup>
@@ -228,6 +230,8 @@
     <Content Include="Views\Recipes\EditRecipeIngredient.cshtml" />
     <Content Include="Views\Recipes\Editinstructions.cshtml" />
     <Content Include="Views\Recipes\Edit.cshtml" />
+    <Content Include="Views\Ingredients\Index.cshtml" />
+    <Content Include="Views\Ingredients\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

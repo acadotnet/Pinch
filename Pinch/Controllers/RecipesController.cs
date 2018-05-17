@@ -255,13 +255,13 @@ namespace Pinch.Controllers
             var ingredientToDelete = _context.RecipeIngredients.FirstOrDefault(ri => ri.Id == ingredientId);
             if (ingredientToDelete == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.OK);
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
             }
 
             _context.RecipeIngredients.Remove(ingredientToDelete);
             _context.SaveChanges();
 
-            return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+            return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
 
     }

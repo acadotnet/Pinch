@@ -1,0 +1,58 @@
+﻿@model Pinch.ViewModels.Ingredients.DetailsViewModel
+@{
+    ViewBag.Title = "Details";
+}
+
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="@Url.RouteUrl("AllIngredients")">Ingredients</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">Details</li>
+    </ol>
+</nav>
+
+<br />
+
+<table class="table table-bordered table-hover StandardTable">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Picture</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var Recipe in Model.Recipes)
+        {
+            <tr>
+                <td>
+                    @if (Recipe.IsFavorite == true)
+                    {
+                        <span class="glyphicon glyphicon-heart text-danger" aria-hidden="true"></span>
+                    }
+                    <a href="@Url.RouteUrl("RecipeDetails", new { id = Recipe.Id })">@Recipe.Name</a>
+                </td>
+                <td>@Recipe.Description</td>
+                <td><img src="@Recipe.ImageLink" class="img-responsive" height="100px" width="100px" /></td>
+
+                <td>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown">
+                            Action <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a href="@Url.RouteUrl("RecipeEdit", new { id = Recipe.Id })">Edit</a></li>
+                            <li><a href="@Url.RouteUrl("EditRecipeIngredient", new { recipeId = Recipe.Id })">Add Ingredients</a></li>
+                            <li><a href="@Url.RouteUrl("Editinstructions", new { recipeId = Recipe.Id })">Add Instructions</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="@Url.RouteUrl("RecipeDelete", new { id = Recipe.Id })">Delete</a></li>
+                        </ul>
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
