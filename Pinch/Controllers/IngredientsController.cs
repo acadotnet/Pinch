@@ -7,24 +7,25 @@ using System.Web.Mvc;
 using System.Data.Entity;
 using Pinch.Models;
 using Pinch.ViewModels.Ingredients;
+using Pinch.Services.Interfaces;
 
 namespace Pinch.Controllers
 {
     [RoutePrefix("Ingredients")]
     public class IngredientsController : Controller
     {
-        protected readonly PinchContext _context;
+        protected readonly IIngredientService _ingredientService;
 
-        public IngredientsController()
+        public IngredientsController(IIngredientService ingredientService)
         {
-            _context = new PinchContext();
+            _ingredientService = ingredientService;
         }
 
         // GET: Ingredients
         [Route("", Name = "AllIngredients")]
         public ActionResult Index()
         {
-            var ingredients = _context.Ingredients.ToList();
+            var ingredients = _ingredientService.Get();
 
             return View(ingredients);
         }
@@ -32,12 +33,8 @@ namespace Pinch.Controllers
         [Route("Details/{ingredientId}", Name = "IngredientDetails")]
         public ActionResult Details(int ingredientId)
         {
-            var detailsViewModels = new DetailsViewModel
-            {
-                Ingredient = _context.Ingredients.FirstOrDefault(i => i.Id == ingredientId),
-                Recipes = _context.RecipeIngredients.Where(ri => ri.IngredientId == ingredientId).Select(ri => ri.Recipe).ToList()
-            };
-
+            var detailsViewModels = _ingredientService.IngredientDetail(ingredientId);
+                
             return View(detailsViewModels);
         }
     }
