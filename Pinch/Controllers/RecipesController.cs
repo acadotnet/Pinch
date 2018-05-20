@@ -9,17 +9,19 @@ using Pinch.Models;
 using Pinch.ViewModels;
 using Pinch.ViewModels.Recipes;
 using System.Net;
+using Pinch.Services;
+using Pinch.Services.Interfaces;
 
 namespace Pinch.Controllers
 {
     [RoutePrefix("Recipes")]
     public class RecipesController : Controller
     {
-        protected readonly PinchContext _context;
+        protected readonly IRecipeService _recipeService;
 
-        public RecipesController()
+        public RecipesController(IRecipeService recipeService)
         {
-            _context = new PinchContext();
+            _recipeService = recipeService;
         }
 
         // GET: Recipes  
@@ -29,15 +31,14 @@ namespace Pinch.Controllers
 
             if (searchBy == "RecipeName")
             {
-                var recipesNameSearch = _context.Recipes.Where(r => r.Name.Contains(Search)).ToList();
+                var recipesNameSearch = _recipeService.RecipeSearchByName(Search);
                 return View(recipesNameSearch);
             }
             else if (searchBy == "Ingredient")
             {
                 var recipeByIngredientSearch = new List<Recipe>();
 
-                var IngredientSearch = _context.Ingredients.Include(i => i.RecipeIngredients.Select(ri => ri.Recipe))
-                                                           .Where(i => i.Name.Contains(Search)).ToList();
+                var IngredientSearch = _recipeService.RecipeSearchByIngredientName(Search).ToList();
                 foreach (var ingredient in IngredientSearch)
                 {
                     foreach(var recipeIngredient in ingredient.RecipeIngredients)
@@ -50,7 +51,7 @@ namespace Pinch.Controllers
             }
             else
             {
-                var recipes = _context.Recipes.ToList();
+                var recipes = _recipeService.GetRecipes();
 
                 return View(recipes);
             }
@@ -59,10 +60,7 @@ namespace Pinch.Controllers
         [Route("Details/{id}", Name = "RecipeDetails")]
         public ActionResult Details(int id)
         {
-            var recipe = _context.Recipes
-                .Include(r => r.RecipeIngredients.Select(ri => ri.Ingredient))
-                .Include(r => r.Instructions)
-                .FirstOrDefault(r => r.Id == id);
+            var recipe = _recipeService.GetRecipeById(id);
 
             if (recipe == null)
             {
@@ -90,14 +88,7 @@ namespace Pinch.Controllers
                 return View(model);
             }
 
-            var recipeToCreate = new Recipe();
-
-            recipeToCreate.Name = model.Name;
-            recipeToCreate.Description = model.Description;
-            recipeToCreate.IsFavorite = model.IsFavorite;
-
-            _context.Recipes.Add(recipeToCreate);
-            _context.SaveChanges();
+            var recipeToCreate = _recipeService.CreateRecipe(model.Name, model.Description, model.IsFavorite, model.ImageLink);
 
             return RedirectToRoute("EditRecipeIngredient", new { recipeId = recipeToCreate.Id});
         }
@@ -105,8 +96,7 @@ namespace Pinch.Controllers
         [Route("Edit/{id}", Name = "RecipeEdit")]
         public ActionResult Edit(int id)
         {
-            var recipe = _context.Recipes.Include(r => r.RecipeIngredients.Select(i => i.Ingredient))
-                                         .Include(r => r.Instructions).FirstOrDefault(r => r.Id == id);
+            var recipe = _recipeService.GetRecipeById(id);
 
             if (recipe == null)
             {
@@ -125,19 +115,14 @@ namespace Pinch.Controllers
                 return View(model);
             }
 
-            var recipeToEdit = _context.Recipes.FirstOrDefault(r => r.Id == model.Id);
+            var recipeToEdit = _recipeService.GetRecipeById(model.Id);
 
             if(recipeToEdit == null)
             {
                 return HttpNotFound();
             }
 
-            recipeToEdit.Name = model.Name;
-            recipeToEdit.Description = model.Description;
-            recipeToEdit.IsFavorite = model.IsFavorite;
-            recipeToEdit.ImageLink = model.ImageLink;
-
-            _context.SaveChanges();
+            _recipeService.EditRecipe(recipeToEdit.Id, model.Name, model.Description, model.IsFavorite, model.ImageLink);
 
             return RedirectToRoute("EditRecipeIngredient", new { recipeId = recipeToEdit.Id });
         }
@@ -145,8 +130,7 @@ namespace Pinch.Controllers
         [Route("EditRecipeIngredient/{recipeId}", Name = "EditRecipeIngredient")]
         public ActionResult EditRecipeIngredient(int recipeId)
         {
-            var recipe = _context.Recipes.Include(r => r.RecipeIngredients.Select(ri => ri.Ingredient))
-                                .FirstOrDefault(r => r.Id == recipeId);
+            var recipe = _recipeService.GetRecipeById(recipeId);
 
             if (recipe == null)
             {
@@ -154,42 +138,20 @@ namespace Pinch.Controllers
             }
 
             return View(recipe);
-            //var editRecipeViewModel = new EditRecipeIngredientViewModel
-            //{
-            //    Recipe = recipe,
-            //    SelectedIngredientName = "",
-            //    Ingredients = _context.Ingredients.ToList()
-            ////};
-
-            //return View(editRecipeViewModel);
         }
 
         [HttpPost]
         [Route("EditRecipeIngredient/{recipeId}", Name = "EditRecipeIngredientAjax")]
         public JsonResult EditRecipeIngredient(EditIngredientViewModel model)
         {
-            var existingIngredient = _context.Ingredients.FirstOrDefault(i => i.Name == model.IngredientName);
+            var existingIngredient = _recipeService.GetIngredientByName(model.IngredientName);
 
             if(existingIngredient == null)
             {
-                existingIngredient = new Ingredient
-                {
-                    Name = model.IngredientName
-                };
-
-                _context.Ingredients.Add(existingIngredient);
+                existingIngredient = _recipeService.AddIngredient(model.IngredientName);
             }
 
-            var recipeIngredientToAdd = new RecipeIngredient
-            {
-                RecipeId = model.RecipeId,
-                Measurement = model.Measurement,
-                UnitOfMeasurement = model.UnitOfMeasurement,
-                IngredientId = existingIngredient.Id
-            };
-
-            _context.RecipeIngredients.Add(recipeIngredientToAdd);
-            _context.SaveChanges();
+            var recipeIngredientToAdd = _recipeService.AddRecipeIngredient(model.RecipeId, model.Measurement, model.UnitOfMeasurement, existingIngredient.Id);
 
             return Json(new
             {
@@ -204,9 +166,8 @@ namespace Pinch.Controllers
         [Route("Editinstructions/{recipeId}", Name = "Editinstructions")]
         public ActionResult Editinstructions(int recipeId)
         {
-            var recipe = _context.Recipes.Include(r => r.Instructions)
-                                         .Include(r => r.RecipeIngredients.Select(ri => ri.Ingredient))
-                                         .FirstOrDefault(r => r.Id == recipeId);
+            var recipe = _recipeService.GetRecipeById(recipeId);
+
             if (recipe == null)
             {
                 return HttpNotFound();
@@ -219,31 +180,20 @@ namespace Pinch.Controllers
         [Route("Editinstructions/{recipeId}", Name = "EditinstructionsAjax")]
         public JsonResult Editinstructions(Instruction model)
         {
-            var recipeInstructionToAdd = new Instruction
-            {
-                RecipeId = model.RecipeId,
-                SequenceOrder = model.SequenceOrder,
-                Name = model.Name
-            };
-
-            _context.Instructions.Add(recipeInstructionToAdd);
-            _context.SaveChanges();
-
-
-            return Json(recipeInstructionToAdd);
+            return Json(_recipeService.CreateRecipeInstructions(model.RecipeId, model.SequenceOrder, model.Name));
         }
 
         [Route("Delete/{id}", Name = "RecipeDelete")]
         public ActionResult Delete(int id)
         {
-            var recipeToDelete = _context.Recipes.FirstOrDefault(r => r.Id == id);
+            var recipeToDelete = _recipeService.GetRecipeById(id);
+
             if (recipeToDelete == null)
             {
                 return HttpNotFound();
             }
 
-            _context.Recipes.Remove(recipeToDelete);
-            _context.SaveChanges();
+            _recipeService.DeleteRecipeById(id);
 
             return RedirectToRoute("AllRecipes");
         }
@@ -252,14 +202,14 @@ namespace Pinch.Controllers
         [Route("DeleteIngredient", Name = "DeleteRecipeIngredient")]
         public ActionResult DeleteIngredient(int ingredientId)
         {
-            var ingredientToDelete = _context.RecipeIngredients.FirstOrDefault(ri => ri.Id == ingredientId);
+            var ingredientToDelete = _recipeService.GetRecipeIngredientsByIngredientId(ingredientId);
+
             if (ingredientToDelete == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.NotFound);
             }
 
-            _context.RecipeIngredients.Remove(ingredientToDelete);
-            _context.SaveChanges();
+            _recipeService.DeleteRecipeIngredient(ingredientId);
 
             return new HttpStatusCodeResult(HttpStatusCode.OK);
         }
