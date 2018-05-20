@@ -33,7 +33,11 @@ namespace Pinch.Controllers
         [Route("Details/{ingredientId}", Name = "IngredientDetails")]
         public ActionResult Details(int ingredientId)
         {
-            var detailsViewModels = _ingredientService.IngredientDetail(ingredientId);
+            var detailsViewModels = new DetailsViewModel
+            {
+                Ingredient = _ingredientService.GetIngredientById(ingredientId),
+                Recipes = _ingredientService.GetRecipiesByIngredientId(ingredientId).ToList()
+            };
                 
             return View(detailsViewModels);
         }

@@ -11,6 +11,8 @@ namespace Pinch.Services.Interfaces
     {
         IEnumerable<Ingredient> Get();
 
-        DetailsViewModel IngredientDetail(int ingredientId);
+        Ingredient GetIngredientById(int ingredientId);
+
+        IEnumerable<Recipe> GetRecipiesByIngredientId(int ingredientId);
     }
 }

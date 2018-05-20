@@ -23,17 +23,14 @@ namespace Pinch.Services
             return _context.Ingredients.ToList();
         }
 
-        public DetailsViewModel IngredientDetail(int ingredientId)
+        public Ingredient GetIngredientById(int ingredientId)
         {
-            var detailsViewModel = new DetailsViewModel
-            {
-                Ingredient = _context.Ingredients.FirstOrDefault(i => i.Id == ingredientId),
-                Recipes = _context.RecipeIngredients.Where(ri => ri.IngredientId == ingredientId).Select(ri => ri.Recipe).ToList()
-            };
-
-            return detailsViewModel;
+            return _context.Ingredients.FirstOrDefault(i => i.Id == ingredientId);
         }
 
-
+        public IEnumerable<Recipe> GetRecipiesByIngredientId(int ingredientId)
+        {
+            return _context.RecipeIngredients.Where(ri => ri.IngredientId == ingredientId).Select(ri => ri.Recipe).ToList();
+        }
     }
 }
