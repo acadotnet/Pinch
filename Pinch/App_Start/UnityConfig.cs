@@ -46,6 +46,7 @@ namespace Pinch
             // TODO: Register your type's mappings here.
             // container.RegisterType<IProductRepository, ProductRepository>();
             container
+                .RegisterType<IHomeServices, EfHomeServices>()
                 .RegisterType<IRecipeService, EFRecipeServices>()
                 .RegisterType<IIngredientService, EfIngredientServices>()
                 .RegisterType<PinchContext>();

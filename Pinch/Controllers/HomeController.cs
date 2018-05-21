@@ -4,28 +4,29 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Pinch.Data;
+using Pinch.Services.Interfaces;
 
 namespace Pinch.Controllers
 {
     public class HomeController : Controller
     {
-        protected readonly PinchContext _context;
+        protected readonly IHomeServices _homeService;
 
-        public HomeController()
+        public HomeController(IHomeServices homeService)
         {
-            _context = new PinchContext();
+            _homeService = homeService;
         }
 
         public ActionResult Index()
         {
-            var recipes = _context.Recipes.Where(r => r.IsFavorite == true).Take(5).ToList();
+            var recipes = _homeService.FavouriteRecipes();
 
             return View(recipes);
         }
 
         public ActionResult Gallery()
         {
-            var recipes = _context.Recipes.ToList();
+            var recipes = _homeService.Get();
 
             return View(recipes);
         }
