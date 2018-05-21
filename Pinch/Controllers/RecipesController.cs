@@ -11,6 +11,7 @@ using Pinch.ViewModels.Recipes;
 using System.Net;
 using Pinch.Services;
 using Pinch.Services.Interfaces;
+using System.IO;
 
 namespace Pinch.Controllers
 {
@@ -161,6 +162,64 @@ namespace Pinch.Controllers
                 IngredientId = recipeIngredientToAdd.IngredientId,
                 IngredientName = model.IngredientName
             });
+        }
+
+        [Route("Upload/{recipeId}", Name = "RecipeIngredientUpload")]
+        public ActionResult Upload(int recipeId)
+        {
+            var upload = new Upload();
+
+            return View(upload);
+        }
+
+        [HttpPost]
+        [Route("Upload/{recipeId}", Name = "RecipeIngredientUploadPost")]
+        public ActionResult Upload(HttpPostedFileBase file, int recipeId)
+        {
+            try
+            {
+                var upload = new Upload();
+                var recipeIngredientToAdd = new RecipeIngredient();
+                var tempRI = new String[3];
+
+                if (file.ContentLength > 0)
+                {
+                    string _filename = Path.GetFileName(file.FileName);
+                    string _path = Path.Combine(Server.MapPath("~/UploadedFiles"), _filename);
+                    file.SaveAs(_path);
+
+                    var recipeIngredients = System.IO.File.ReadAllLines(_path);
+
+                    upload.FileName = _filename;
+                    upload.FileDataType = "RecipeIngredients";
+                    upload.RecipeId = recipeId;
+                    upload.FileData = String.Join("/", recipeIngredients);
+
+                    _recipeService.UploadFile(upload);
+
+                    foreach (var item in recipeIngredients)
+                    {
+                        tempRI = item.Split(',');
+
+                        var existingIngredient = _recipeService.GetIngredientByName(tempRI[2]);
+                        if (existingIngredient == null)
+                        {
+                            existingIngredient = _recipeService.AddIngredient(tempRI[2]);
+                        }
+
+                        recipeIngredientToAdd = _recipeService.AddRecipeIngredient(recipeId, tempRI[0], tempRI[1], existingIngredient.Id);
+
+                    }
+                }
+                ViewBag.Message = "File Uploaded Successfully!!";
+                return RedirectToRoute("EditRecipeIngredient", new { recipeId = recipeIngredientToAdd.RecipeId});
+            }
+            catch
+            {
+                ViewBag.Message = "File upload failed!!";
+                return View();
+            }
+            
         }
 
         [Route("Editinstructions/{recipeId}", Name = "Editinstructions")]

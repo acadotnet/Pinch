@@ -11,7 +11,7 @@ namespace Pinch.Models
         public int Id { get; set; }
 
         [Required]
-        public int Measurement { get; set; }
+        public string Measurement { get; set; }
 
         [Required]
         public string UnitOfMeasurement { get; set; }

@@ -120,7 +120,7 @@ namespace Pinch.Services
             return ingredient;
         }
 
-        public RecipeIngredient AddRecipeIngredient(int id, int measurement, string measureUnit, int ingredientId)
+        public RecipeIngredient AddRecipeIngredient(int id, string measurement, string measureUnit, int ingredientId)
         {
             var recipeIngredientToAdd = new RecipeIngredient
             {
@@ -134,6 +134,13 @@ namespace Pinch.Services
             _context.SaveChanges();
 
             return recipeIngredientToAdd;
+        }
+
+        public void UploadFile(Upload file)
+        {
+            _context.Uploads.Add(file);
+            _context.SaveChanges();
+
         }
     }
 }

@@ -181,14 +181,25 @@
     <Compile Include="Migrations\201805140315441_AddedSeedMethod1.Designer.cs">
       <DependentUpon>201805140315441_AddedSeedMethod1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201805201931446_UploadedFileTable.cs" />
+    <Compile Include="Migrations\201805201931446_UploadedFileTable.Designer.cs">
+      <DependentUpon>201805201931446_UploadedFileTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201805202240247_changedMeasurementDatatype.cs" />
+    <Compile Include="Migrations\201805202240247_changedMeasurementDatatype.Designer.cs">
+      <DependentUpon>201805202240247_changedMeasurementDatatype.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Ingredient.cs" />
     <Compile Include="Models\Instruction.cs" />
     <Compile Include="Models\Recipe.cs" />
     <Compile Include="Models\RecipeIngredient.cs" />
+    <Compile Include="Models\Upload.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\EfIngredientServices.cs" />
     <Compile Include="Services\EFRecipeServices.cs" />
+    <Compile Include="Services\Interfaces\EfHomeServices.cs" />
+    <Compile Include="Services\Interfaces\IHomeServices.cs" />
     <Compile Include="Services\Interfaces\IIngredientService.cs" />
     <Compile Include="Services\Interfaces\IRecipeService.cs" />
     <Compile Include="ViewModels\Ingredients\DetailsViewModel.cs" />
@@ -250,9 +261,11 @@
     <Content Include="Views\Recipes\Edit.cshtml" />
     <Content Include="Views\Ingredients\Index.cshtml" />
     <Content Include="Views\Ingredients\Details.cshtml" />
+    <Content Include="Views\Recipes\Upload.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="UploadedFiles\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -275,6 +288,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201805140315441_AddedSeedMethod1.resx">
       <DependentUpon>201805140315441_AddedSeedMethod1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805201931446_UploadedFileTable.resx">
+      <DependentUpon>201805201931446_UploadedFileTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805202240247_changedMeasurementDatatype.resx">
+      <DependentUpon>201805202240247_changedMeasurementDatatype.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

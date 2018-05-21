@@ -21,6 +21,6 @@ namespace Pinch.Data
         public DbSet<Ingredient> Ingredients { get; set; }
         public DbSet<Instruction> Instructions { get; set; }
         public DbSet<RecipeIngredient> RecipeIngredients { get; set; }
-
+        public DbSet<Upload> Uploads { get; set; }
     }
 }

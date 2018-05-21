@@ -32,6 +32,8 @@ namespace Pinch.Services.Interfaces
 
         Ingredient AddIngredient(string name);
 
-        RecipeIngredient AddRecipeIngredient(int id, int measurement, string unit, int ingredientId);
+        RecipeIngredient AddRecipeIngredient(int id, string measurement, string unit, int ingredientId);
+
+        void UploadFile(Upload file);
     }
 }

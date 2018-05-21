@@ -1,0 +1,18 @@
+﻿@model Pinch.Models.Upload
+@{
+    ViewBag.Title = "Upload";
+}
+
+<h2>UploadRecipeIngredients</h2>
+
+
+<form action="@Url.RouteUrl("RecipeIngredientUploadPost")" method="post" enctype="multipart/form-data">
+    @*<input type="file" name="file" />*@
+    <div>
+        @Html.TextBox("file", "", new { type = "file" }) <br />
+        <input type="submit" name="Submit" id="Submit" value="Upload" />
+        @ViewBag.Message
+    </div>
+</form>
+
+
