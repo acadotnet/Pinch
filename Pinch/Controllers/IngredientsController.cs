@@ -41,5 +41,15 @@ namespace Pinch.Controllers
                 
             return View(detailsViewModels);
         }
+
+        [Route("FewerIngredientsRecipes", Name = "FewerIngredientsRecipes")]
+        public ActionResult FewerIngredientsRecipes()
+        {
+            var recipes = _ingredientService.GetFewerIngredientsRecipes();
+
+            return View(recipes);
+        }
+
+
     }
 }

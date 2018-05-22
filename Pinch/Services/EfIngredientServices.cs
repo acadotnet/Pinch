@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Data.Entity;
 
 namespace Pinch.Services
 {
@@ -32,5 +33,26 @@ namespace Pinch.Services
         {
             return _context.RecipeIngredients.Where(ri => ri.IngredientId == ingredientId).Select(ri => ri.Recipe).ToList();
         }
+
+        public IEnumerable<Recipe> GetFewerIngredientsRecipes()
+        {
+            var recipes = new List<Recipe>();
+
+            foreach (var recipe in _context.RecipeIngredients.GroupBy(r => r.RecipeId)
+                                             .Select(g => new
+                                             {
+                                                 RecipeId = g.Key,
+                                                 Count = g.Count()
+                                             })
+                                             .Where(r => r.Count < 5)
+                                             .OrderBy(r => r.Count)
+                                             .ToList())
+            {
+                recipes.Add(_context.Recipes.FirstOrDefault(r => r.Id == recipe.RecipeId));
+            }
+
+            return recipes;
+        }
+
     }
 }

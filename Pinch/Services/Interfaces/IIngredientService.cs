@@ -14,5 +14,7 @@ namespace Pinch.Services.Interfaces
         Ingredient GetIngredientById(int ingredientId);
 
         IEnumerable<Recipe> GetRecipiesByIngredientId(int ingredientId);
+
+        IEnumerable<Recipe> GetFewerIngredientsRecipes();
     }
 }

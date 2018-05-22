@@ -198,7 +198,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\EfIngredientServices.cs" />
     <Compile Include="Services\EFRecipeServices.cs" />
-    <Compile Include="Services\Interfaces\EfHomeServices.cs" />
+    <Compile Include="Services\EfHomeServices.cs" />
     <Compile Include="Services\Interfaces\IHomeServices.cs" />
     <Compile Include="Services\Interfaces\IIngredientService.cs" />
     <Compile Include="Services\Interfaces\IRecipeService.cs" />
@@ -262,6 +262,7 @@
     <Content Include="Views\Ingredients\Index.cshtml" />
     <Content Include="Views\Ingredients\Details.cshtml" />
     <Content Include="Views\Recipes\Upload.cshtml" />
+    <Content Include="Views\Ingredients\FewerIngredientsRecipes.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
