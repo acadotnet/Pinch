@@ -13,6 +13,8 @@ namespace Pinch.Models
         [Required]
         public string Name { get; set; }
 
+        public string IngredientImage { get; set; }
+
         public ICollection<RecipeIngredient> RecipeIngredients { get; set; }
 
     }

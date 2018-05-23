@@ -189,6 +189,10 @@
     <Compile Include="Migrations\201805202240247_changedMeasurementDatatype.Designer.cs">
       <DependentUpon>201805202240247_changedMeasurementDatatype.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201805232311596_addedIngredientImage.cs" />
+    <Compile Include="Migrations\201805232311596_addedIngredientImage.Designer.cs">
+      <DependentUpon>201805232311596_addedIngredientImage.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Ingredient.cs" />
     <Compile Include="Models\Instruction.cs" />
@@ -202,6 +206,7 @@
     <Compile Include="Services\Interfaces\IHomeServices.cs" />
     <Compile Include="Services\Interfaces\IIngredientService.cs" />
     <Compile Include="Services\Interfaces\IRecipeService.cs" />
+    <Compile Include="ViewModels\Home\IndexViewModel.cs" />
     <Compile Include="ViewModels\Ingredients\DetailsViewModel.cs" />
     <Compile Include="ViewModels\Recipes\EditIngredientViewModel.cs" />
     <Compile Include="ViewModels\Recipes\EditRecipeIngredientViewModel.cs" />
@@ -295,6 +300,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201805202240247_changedMeasurementDatatype.resx">
       <DependentUpon>201805202240247_changedMeasurementDatatype.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805232311596_addedIngredientImage.resx">
+      <DependentUpon>201805232311596_addedIngredientImage.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

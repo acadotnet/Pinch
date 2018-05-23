@@ -54,5 +54,25 @@ namespace Pinch.Services
             return recipes;
         }
 
+        public IEnumerable<Ingredient> GetPopularIngredients()
+        {
+            var ingredients = new List<Ingredient>();
+
+            foreach (var ingredient in _context.RecipeIngredients.GroupBy(r => r.IngredientId)
+                                             .Select(g => new
+                                             {
+                                                 IngredientId = g.Key,
+                                                 Count = g.Count()
+                                             })
+                                             .Where(r => r.Count > 3 && r.Count < 7)
+                                             .OrderByDescending(r => r.Count)
+                                             .ToList())
+            {
+                ingredients.Add(_context.Ingredients.FirstOrDefault(r => r.Id == ingredient.IngredientId));
+            }
+
+            return ingredients;
+        }
+
     }
 }

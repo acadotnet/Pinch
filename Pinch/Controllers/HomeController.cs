@@ -5,23 +5,31 @@ using System.Web;
 using System.Web.Mvc;
 using Pinch.Data;
 using Pinch.Services.Interfaces;
+using Pinch.ViewModels.Home;
 
 namespace Pinch.Controllers
 {
     public class HomeController : Controller
     {
         protected readonly IHomeServices _homeService;
+        protected readonly IIngredientService _ingredientService;
 
-        public HomeController(IHomeServices homeService)
+        public HomeController(IHomeServices homeService, IIngredientService ingredientService)
         {
             _homeService = homeService;
+            _ingredientService = ingredientService;
         }
 
         public ActionResult Index()
         {
-            var recipes = _homeService.FavouriteRecipes();
-
-            return View(recipes);
+            var indexViewModel = new IndexViewModel
+            {
+                FavouriteRecipes = _homeService.FavouriteRecipes().ToList(),
+                Weekdaymeals = _ingredientService.GetFewerIngredientsRecipes().ToList(),
+                PopularIngredients = _ingredientService.GetPopularIngredients().ToList()
+            };
+           
+            return View(indexViewModel);
         }
 
         public ActionResult Gallery()
