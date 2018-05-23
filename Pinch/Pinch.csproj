@@ -256,13 +256,13 @@
     <Content Include="Views\Recipes\Index.cshtml" />
     <Content Include="Views\Recipes\Create.cshtml" />
     <Content Include="Views\Recipes\Details.cshtml" />
-    <Content Include="Views\Recipes\EditRecipeIngredient.cshtml" />
     <Content Include="Views\Recipes\Editinstructions.cshtml" />
     <Content Include="Views\Recipes\Edit.cshtml" />
     <Content Include="Views\Ingredients\Index.cshtml" />
     <Content Include="Views\Ingredients\Details.cshtml" />
     <Content Include="Views\Recipes\Upload.cshtml" />
     <Content Include="Views\Ingredients\FewerIngredientsRecipes.cshtml" />
+    <Content Include="Views\Recipes\EditRecipeIngredient.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
