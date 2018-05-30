@@ -53,7 +53,8 @@
                           RecipeId = ri.RecipeId,
                           Measurement = ri.Measurement,
                           UnitOfMeasurement = ri.UnitOfMeasurement,
-                          IngredientName = ri.Ingredient.Name })
+                          IngredientName = ri.Ingredient.Name,
+                          IsNewIngredient = false})
                       .ToArray()))';
         var ul = $("<ul class=\"list-group\">");
 
@@ -101,7 +102,13 @@
                     IngredientName: $('#ingredient-name').val()
                 },
                 success: function (data) {
-                    toastr.success("Thanks for adding ingredient");
+                    if (data.IsNewIngredient == true) {
+                        toastr.success("<div>Nice choice of Ingredient! <a href=\"/Ingredients/IngredientDetails/" + data.RecipeId + "/" + data.IngredientId + "\" target=\"_blank\">Click here</a> if you want to add a picture of this Ingredient?</div>");
+                    }
+                    else
+                    {
+                        toastr.success("Thanks for adding ingredient");
+                    }
                     console.log(data);
                     $("#recipe-ingredients ul").append("<li class=\"list-group-item\">" + data.Measurement + "  " + data.UnitOfMeasurement + "  " + data.IngredientName + "</li>");
                     $('#ingredient-name').val('');

@@ -74,5 +74,17 @@ namespace Pinch.Services
             return ingredients;
         }
 
+        public Ingredient EditIngredient(Ingredient ingredient)
+        {
+            var ingredient1 = _context.Ingredients.FirstOrDefault(i => i.Id == ingredient.Id);
+
+            ingredient1.Name = ingredient.Name;
+            ingredient1.IngredientImage = ingredient.IngredientImage;
+            ingredient1.IsMainIngredient = ingredient.IsMainIngredient;
+
+            _context.SaveChanges();
+            
+            return ingredient;
+        }
     }
 }

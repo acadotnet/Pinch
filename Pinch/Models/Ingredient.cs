@@ -15,6 +15,8 @@ namespace Pinch.Models
 
         public string IngredientImage { get; set; }
 
+        public bool IsMainIngredient { get; set; }
+
         public ICollection<RecipeIngredient> RecipeIngredients { get; set; }
 
     }

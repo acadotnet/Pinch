@@ -8,6 +8,8 @@ using System.Data.Entity;
 using Pinch.Models;
 using Pinch.ViewModels.Ingredients;
 using Pinch.Services.Interfaces;
+using Pinch.ViewModels.Ingredients;
+using Pinch.ViewModels.Recipes;
 
 namespace Pinch.Controllers
 {
@@ -49,6 +51,33 @@ namespace Pinch.Controllers
 
             return View(recipes);
         }
+
+        [Route("IngredientDetails/{recipeId}/{ingredientId}", Name = "IngredientDetailsnew")]
+        public ActionResult IngredientDetails(int ingredientId, int recipeId)
+        {
+            var ingredientDetailsViewModel = new IngredientDetailsNewViewModel
+            {
+                Ingredient = _ingredientService.GetIngredientById(ingredientId),
+                RecipeId = recipeId
+            };
+
+            return View(ingredientDetailsViewModel);
+        }
+
+        [HttpPost]
+        [Route("IngredientDetails/{recipeId}/{ingredientId}", Name = "IngredientDetailsnewPost")]
+        public ActionResult IngredientDetails(IngredientDetailsNewViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var ingredientToCreate = _ingredientService.EditIngredient(model.Ingredient);
+                
+            return RedirectToRoute("EditRecipeIngredient", new { recipeId = model.RecipeId });
+        }
+
 
 
     }

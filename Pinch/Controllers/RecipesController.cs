@@ -108,6 +108,7 @@ namespace Pinch.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         [Route("Edit", Name = "RecipeEditPost")]
         public ActionResult Edit(Recipe model)
         {
@@ -145,10 +146,12 @@ namespace Pinch.Controllers
         [Route("EditRecipeIngredient/{recipeId}", Name = "EditRecipeIngredientAjax")]
         public JsonResult EditRecipeIngredient(EditIngredientViewModel model)
         {
+            bool isNewIngredient = false;
             var existingIngredient = _recipeService.GetIngredientByName(model.IngredientName);
 
             if(existingIngredient == null)
             {
+                isNewIngredient = true;
                 existingIngredient = _recipeService.AddIngredient(model.IngredientName);
             }
 
@@ -160,7 +163,8 @@ namespace Pinch.Controllers
                 Measurement = recipeIngredientToAdd.Measurement,
                 UnitOfMeasurement = recipeIngredientToAdd.UnitOfMeasurement,
                 IngredientId = recipeIngredientToAdd.IngredientId,
-                IngredientName = model.IngredientName
+                IngredientName = model.IngredientName,
+                IsNewIngredient = isNewIngredient
             });
         }
 

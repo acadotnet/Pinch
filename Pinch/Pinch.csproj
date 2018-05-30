@@ -162,6 +162,8 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\UnityConfig.cs" />
     <Compile Include="App_Start\UnityMvcActivator.cs" />
+    <Compile Include="Areas\Admin\AreasAreaRegistration.cs" />
+    <Compile Include="Areas\Admin\Controllers\RecipesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\IngredientsController.cs" />
     <Compile Include="Controllers\RecipesController.cs" />
@@ -193,6 +195,10 @@
     <Compile Include="Migrations\201805232311596_addedIngredientImage.Designer.cs">
       <DependentUpon>201805232311596_addedIngredientImage.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201805240043397_addedIsMainIngredient.cs" />
+    <Compile Include="Migrations\201805240043397_addedIsMainIngredient.Designer.cs">
+      <DependentUpon>201805240043397_addedIsMainIngredient.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Ingredient.cs" />
     <Compile Include="Models\Instruction.cs" />
@@ -209,7 +215,7 @@
     <Compile Include="ViewModels\Home\IndexViewModel.cs" />
     <Compile Include="ViewModels\Ingredients\DetailsViewModel.cs" />
     <Compile Include="ViewModels\Recipes\EditIngredientViewModel.cs" />
-    <Compile Include="ViewModels\Recipes\EditRecipeIngredientViewModel.cs" />
+    <Compile Include="ViewModels\Ingredients\IngredientDetailsNewViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
@@ -227,6 +233,7 @@
     </Content>
     <Content Include="Content\toastr.scss" />
     <Content Include="Content\toastr.less" />
+    <Content Include="Areas\Admin\Views\web.config" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
     <Content Include="Scripts\jquery-3.3.1.min.js" />
@@ -268,9 +275,13 @@
     <Content Include="Views\Recipes\Upload.cshtml" />
     <Content Include="Views\Ingredients\FewerIngredientsRecipes.cshtml" />
     <Content Include="Views\Recipes\EditRecipeIngredient.cshtml" />
+    <Content Include="Views\Ingredients\IngredientDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Areas\Admin\Models\" />
+    <Folder Include="Areas\Admin\Views\Recipes\" />
+    <Folder Include="Areas\Admin\Views\Shared\" />
     <Folder Include="UploadedFiles\" />
   </ItemGroup>
   <ItemGroup>
@@ -303,6 +314,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201805232311596_addedIngredientImage.resx">
       <DependentUpon>201805232311596_addedIngredientImage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201805240043397_addedIsMainIngredient.resx">
+      <DependentUpon>201805240043397_addedIsMainIngredient.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

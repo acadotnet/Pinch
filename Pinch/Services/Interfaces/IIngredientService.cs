@@ -19,5 +19,7 @@ namespace Pinch.Services.Interfaces
 
         IEnumerable<Ingredient> GetPopularIngredients();
 
+        Ingredient EditIngredient(Ingredient ingredient);
+
     }
 }
